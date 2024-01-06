@@ -1,4 +1,4 @@
 django
 djangorestframework
+python 3.12.0
 
-psycopg2
