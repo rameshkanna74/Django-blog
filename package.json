@@ -1,0 +1,8 @@
+{
+  "scripts": {
+    "dev": "tailwindcss -i zeus/static/tw/tailwind-input.css -o zeus/static/css/zeus-ui.css --watch"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.1"
+  }
+}

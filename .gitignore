@@ -74,7 +74,10 @@ docs/_build/
 # PyBuilder
 .pybuilder/
 target/
-
+/node_modules/
+node_modules/
+/node_modules
+node_modules
 # Jupyter Notebook
 .ipynb_checkpoints
 
@@ -119,6 +122,12 @@ celerybeat.pid
 # SageMath parsed files
 *.sage.py
 
+#static
+static/
+local-cdn/
+/local-cdn
+local-cdn
+local-cdn
 # Environments
 .env
 .venv
