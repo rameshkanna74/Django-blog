@@ -17,7 +17,7 @@ class UserManager(BaseUserManager):
 
         return self.create_user(email, password, name, **other_fields)
 
-    def create_user(email, password, name, **other_fields):
+    def create_user(self, email, password, name, **other_fields):
         if not email:
             raise ValueError("You must provide a valid email.")
 
