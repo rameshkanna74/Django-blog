@@ -33,6 +33,8 @@ if not DEBUG:
 
 print("secret key :", SECRET_KEY)
 print("debug: ", DEBUG)
+
+SITE_ID = 1
 # Application definition
 
 
@@ -43,10 +45,14 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django.contrib.sites",
     "users",
     "rest_framework",
     "rest_framework.authtoken",
-    "djoser",
+    "allauth",
+    "allauth.account",
+    "allauth.socialaccount",
+    "allauth.socialaccount.providers.github",
     "corsheaders",
 ]
 
@@ -59,6 +65,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "allauth.account.middleware.AccountMiddleware",
 ]
 
 ROOT_URLCONF = "zeus.urls"
@@ -74,6 +81,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "django.template.context_processors.request",
             ],
         },
     },
@@ -137,33 +145,19 @@ STATICFILES_DIRS = [
     BASE_DIR / "static",
     BASE_DIR.parent / "node_modules",
 ]
-print(BASE_DIR.parent / "node_modules")
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Auth settings
-AUTH_USER_MODEL = "users.User"
-
-USER_CREATE_PASSWORD_RETYPE = False
-
-DJOSER = {
-    "SERIALIZERS": {
-        "user": "users.serializers.UserAuthSerializer",
-        "current_user": "users.serializers.UserAuthSerializer",
-    },
-}
-
-REST_FRAMEWORK = {
-    "DEFAULT_AUTHENTICATION_CLASSES": (
-        "rest_framework_simplejwt.authentication.JWTAuthentication",
-    ),
-}
-
-SIMPLE_JWT = {
-    "AUTH_HEADER_TYPES": ("Token",),
-}
+# AUTH_USER_MODEL = "users.User"
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = False
+ACCOUNT_SESSION_REMEMBER = True
+ACCOUNT_AUTHENTICATION_METHOD = "email"
+ACCOUNT_UNIQUE_EMAIL = True
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
@@ -174,3 +168,21 @@ CSRF_TRUSTED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
 ]
+
+
+AUTHENTICATION_BACKENDS = [
+    "django.contrib.auth.backends.ModelBackend",
+    "allauth.account.auth_backends.AuthenticationBackend",
+]
+
+SOCIALACCOUNT_PROVIDERS = {
+    "github": {
+        "APP": {
+            "client_id": os.environ.get("GITHUB_CLIENT_ID"),
+            "secret": os.environ.get("GITHUB_SECRET"),
+            "key": "",
+        }
+    }
+}
+print("secret key :", os.environ.get("GITHUB_CLIENT_ID"))
+print("debug: ", os.environ.get("GITHUB_SECRET"))
