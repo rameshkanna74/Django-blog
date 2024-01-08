@@ -7,7 +7,7 @@ from users.models import User, Profile
 from django.contrib import messages
 
 
-@login_required(login_url="login_t")
+@login_required(login_url="login")
 def home(request):
     return render(request, "pages/home.html", {})
 
@@ -45,7 +45,7 @@ def signup(request):
         return render(request, "pages/signup.html", {})
 
 
-def login_t(request):
+def login(request):
     if request.method == "POST":
         email = request.POST["email"]
         password = request.POST["password"]
@@ -55,12 +55,12 @@ def login_t(request):
             return redirect("home")
         else:
             messages.info(request, "Credentials Invalid")
-            return redirect("login_t")
+            return redirect("login")
     else:
         return render(request, "pages/login.html")
 
 
-@login_required(login_url="login_t")
-def logout_t(request):
+@login_required(login_url="login")
+def logout(request):
     user_logout(request)
-    return redirect("login_t")
+    return redirect("login")

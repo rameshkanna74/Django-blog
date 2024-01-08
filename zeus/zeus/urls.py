@@ -23,8 +23,8 @@ from .views import home_view
 urlpatterns = [
     path("aurexus/", admin.site.urls),
     path("user/", include("users.urls")),
-    path("api/v1/", include("djoser.urls")),
-    path("api/v1/", include("djoser.urls.authtoken")),
+    # path("api/v1/", include("djoser.urls")),
+    # path("api/v1/", include("djoser.urls.authtoken")),
     path("home/", home_view, name="home"),
 ]
 
