@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "users",
     "rest_framework",
+    "rest_framework.authtoken",
     "djoser",
     "corsheaders",
 ]
@@ -132,8 +133,11 @@ MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
 STATIC_ROOT = BASE_DIR.parent / "local-cdn" / "static"
 
-STATICFILES_DIRS = [BASE_DIR / "static"]
-
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+    BASE_DIR.parent / "node_modules",
+]
+print(BASE_DIR.parent / "node_modules")
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
@@ -141,6 +145,8 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Auth settings
 AUTH_USER_MODEL = "users.User"
+
+USER_CREATE_PASSWORD_RETYPE = False
 
 DJOSER = {
     "SERIALIZERS": {

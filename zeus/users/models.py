@@ -1,3 +1,4 @@
+from uuid import uuid1
 from django.contrib.auth.base_user import AbstractBaseUser
 from django.contrib.auth.models import BaseUserManager, PermissionsMixin
 from django.db import models
@@ -46,3 +47,16 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self) -> str:
         return self.name + " " + self.email
+
+
+class Profile(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    id_user = models.UUIDField(default=uuid1, editable=False)
+    bio = models.CharField(max_length=100, blank=True)
+    profile_img = models.ImageField(
+        upload_to="profile_images", default="blank-profile-picture.jpg"
+    )
+    location = models.CharField(max_length=100, blank=True)
+
+    def __str__(self):
+        return self.user.name
