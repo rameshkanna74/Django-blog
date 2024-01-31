@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OpenSeadragon Example</title>
+
+  <!-- Include OpenSeadragon library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/openseadragon/2.4.2/openseadragon.min.js"></script>
+
+  <style>
+    /* Add your custom styles here */
+    #openseadragon {
+      width: 100vw;
+      height: 100vh;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="openseadragon"></div>
+
+  <script>
+    // Initialize OpenSeadragon
+    var viewer = OpenSeadragon({
+      id: "openseadragon",
+      prefixUrl: "https://openseadragon.github.io/openseadragon/images/",
+      tileSources: {
+        type: 'image',
+        url: 'https://via.placeholder.com/1280x720',
+      }
+    });
+  </script>
+
+</body>
+
+</html>

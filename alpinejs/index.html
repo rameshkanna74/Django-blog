@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Awesome</title>
+    <style type="text/tailwindcss">
+        :root {
+            --primary: rgb(88, 40, 244);
+            --primary-hover: rgb(69, 29, 200)
+        }
+        h1 {
+            font-size: 4rem;
+            line-height: 1.2;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+        .button{
+            display: inline-flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            text-align: center;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            padding: 0 1rem;
+            padding-left: 1rem;
+            min-height: 3.3rem;
+            font-weight: 600;
+            box-shadow: 0 4px 3px rgba(0,0,0, 0.1);
+            transition-property: transform;
+            transition-duration: .2s;
+            color: white;
+            background-color: var(--primary);
+        }
+        .button:hover{
+            background-color: var(--primary-hover);
+        }
+        .button:active{
+            transform: scale(0.95);
+        }
+        .navitems>li>a {
+            @apply p-4 hover:bg-gray-700 rounded-lg flex items-center gap-2
+        }
+    </style>
+</head>
+
+<body>
+    <header class="flex items-center justify-between bg-gray-800 px-8 h-20 text-white sticky top-0 z-50">
+        <logo>
+            <a class="flex items-center gap-1" href="">
+                <img class="h-8 -mt-1" src="https://img.icons8.com/small/64/ffffff/fire-heart.png" alt="fire-heart"
+                    srcset="">
+                <span>Awesome</span>
+            </a>
+        </logo>
+        <nav>
+            <ul class="flex items-center navitems">
+                <li><a href="">Home</a></li>
+                <li><a href="">Create</a></li>
+                <li><a href="">
+                        <img class="h-8 rounded-full object-cover bg-teal-200"
+                            src="https://img.icons8.com/doodle/96/bart-simpson.png" alt="bart-simpson">
+                        Alpine JS
+                        <img class="w-4" src="https://img.icons8.com/small/64/777777/expand-arrow.png"
+                            alt="expand-arrow" />
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <hero class="block bg-gray-700 text-white text-center py-24 px-10 bg-cover bg-center bg-[url('https://live.staticflickr.com/65525/49909538937_3255dcf9e7_b.jpg')]">
+        <h1>Awesome Photos & Captions</h1>
+        <p class="text-lg font-bold mb-10">Share your favorite Photos from Flickr and add a great caption</p>
+        <a class="button" href="">Get Started</a>
+    </hero>
+
+</body>
+
+</html>
