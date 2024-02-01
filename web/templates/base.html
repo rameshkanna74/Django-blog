@@ -1,5 +1,4 @@
 {% load static %}
-{% load compress %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,9 +8,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Django + Tailwind CSS + Flowbite</title>
 
-  {% compress css %}
+
   <link rel="stylesheet" href="{% static 'css/web-ui.css' %}">
-  {% endcompress %}
   <!-- Add this to your Django template head section -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@7/swiper-bundle.min.css" />
   <script src="https://cdn.jsdelivr.net/npm/swiper@7/swiper-bundle.min.js"></script>

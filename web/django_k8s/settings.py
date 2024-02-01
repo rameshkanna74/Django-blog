@@ -52,7 +52,6 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django.contrib.sites",
-    "compressor",
     "allauth",
     "allauth.account",
     "allauth.socialaccount",
@@ -64,6 +63,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -155,16 +155,15 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATIC_URL = "static/"
 MEDIA_URL = "media/"
-
 MEDIA_ROOT = BASE_DIR / "media"
-STATIC_ROOT = BASE_DIR / "static"
 
+STATIC_URL = "static/"
 STATICFILES_DIRS = [
-    BASE_DIR / "static-cdn",
+    BASE_DIR / "static",
     # BASE_DIR.parent / "node_modules",
 ]
+STATIC_ROOT = BASE_DIR / "static-root"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
@@ -203,9 +202,3 @@ SOCIALACCOUNT_PROVIDERS = {
         }
     }
 }
-
-COMPRESS_ROOT = BASE_DIR / "static"
-
-COMPRESS_ENABLED = True
-
-STATICFILES_FINDERS = ("compressor.finders.CompressorFinder",)

@@ -1,94 +1,65 @@
-<!-- templates/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inline Gallery</title>
+  <link rel="stylesheet" href="node_modules\lightgallery\css\lightgallery-bundle.min.css">
+  node_modules\lightgallery\css\lightgallery-bundle.min.css
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@2.3.2/dist/css/lightgallery.min.css">
+  <style>
+    .inline-gallery-container {
+      width: 100%;
+      height: 0;
+      padding-bottom: 65%;
+    }
+  </style>
+</head>
+<body>
+<h1>Django</h1>
+<div id="inline-gallery-container" class="inline-gallery-container"></div>
+<h1>Django</h1>
 
-{% extends "base.html" %} {% block content %}
-<div class="flex flex-row">
-  <div class="basis-1/2">
+<script src="https://cdn.jsdelivr.net/npm/lightgallery@2.3.2/dist/js/lightgallery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lightgallery@2.3.2/dist/js/plugins/lg-thumbnail.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lightgallery@2.3.2/dist/js/plugins/lg-fullscreen.min.js"></script>
 
-    <div class="px-4 lg:px-8">
-      <!-- Start coding here -->
-      <div class="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
-        <div class="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
-          <!-- ... your existing code ... -->
-        </div>
-        <div class="overflow-x-auto">
-          <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-              <tr>
-                <!-- ... your existing headers ... -->
-              </tr>
-            </thead>
-            <tbody>
-              {% for document in document_data %}
-              <tr class="border-b dark:border-gray-700">
-                <th scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                  <form method="post" action="{% url 'edit_document' document.id %}">
-                    {% csrf_token %}
-                    <input type="text" name="image_name" value="{{ document.image_name }}"
-                      class="border-none focus:outline-none">
-                  </form>
-                </th>
-                <!-- Add other columns similarly -->
-                <td class="px-4 py-3">
-                  <form method="post" action="{% url 'edit_document' document.id %}">
-                    {% csrf_token %}
-                    <textarea name="ocr_text" class="border-none focus:outline-none">{{ document.ocr_text }}</textarea>
-                  </form>
-                </td>
-                <!-- ... other columns ... -->
-                <td class="px-4 py-3">
-                  <form method="post" action="{% url 'edit_document' document.id %}">
-                    {% csrf_token %}
-                    <input type="text" name="grade" value="{{ document.grade }}" class="border-none focus:outline-none">
-                  </form>
-                </td>
-                <!-- ... other columns ... -->
-                <td class="px-4 py-3 flex items-center justify-end">
-                  <button type="submit" class="text-blue-500 hover:underline">Save</button>
-                </td>
-              </tr>
-              {% endfor %}
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="basis-1/2">
-    <!-- Add lightgallery wrapper around the image -->
-    {% load static %}
-    <!-- <div id="lightgallery">
-      <a href="{% static 'images/FRSHD_INV_GR_11YF_001_00000017_A.jpg' %}" data-lg-size="1600-900">
-        <img src="{% static 'images/FRSHD_INV_GR_11YF_001_00000017_A.jpg' %}" alt="img"
-          class="w-full h-auto cursor-pointer">
-      </a>
-    </div> -->
-    <div class="swiper">
-      <div class="swiper-wrapper">
-        <div class="swiper-slide swiper-scrollbar"> <img
-            src="{% static 'images/FRSHD_INV_GR_11YF_001_00000017_A.jpg' %}" alt="img"
-            class="w-full h-auto cursor-pointer"></div>
-        <!-- Add more slides as needed -->
-      </div>
-      </dir>
-    </div>
-  </div>
-
-  <!-- Include lightgallery CSS and JS -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery/dist/css/lightgallery.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/lightgallery/dist/js/lightgallery.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/lightgallery/dist/js/lg-zoom.min.js"></script> <!-- Include zoom module -->
-
-  <!-- Initialize lightgallery -->
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      lightGallery(document.getElementById('lightgallery'), {
-        download: true, // Optional: Disable download button
-        zoom: true, // Enable zooming
-        fullScreen: false, // Optional: Disable fullscreen button
-        thumbnail: true, // Optional: Enable thumbnail navigation
-        animateThumb: false, // Optional: Disable thumbnail animation
-      });
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const lgContainer = document.getElementById('inline-gallery-container');
+    const inlineGallery = lightGallery(lgContainer, {
+      container: lgContainer,
+      dynamic: true,
+      hash: false,
+      closable: false,
+      showMaximizeIcon: true,
+      appendSubHtmlTo: '.lg-item',
+      slideDelay: 400,
+      dynamicEl: [
+        {
+          src: 'https://via.placeholder.com/800x600',
+          thumb: 'https://via.placeholder.com/150',
+          subHtml: `<div class="lightGallery-captions">
+                      <h4>Caption 1</h4>
+                      <p>Description of the slide 1</p>
+                    </div>`,
+        },
+        {
+          src: 'https://via.placeholder.com/800x600',
+          thumb: 'https://via.placeholder.com/150',
+          subHtml: `<div class="lightGallery-captions">
+                      <h4>Caption 2</h4>
+                      <p>Description of the slide 2</p>
+                    </div>`,
+        },
+        // Add more dynamicEl entries as needed
+      ],
     });
-  </script>
 
-  {% endblock content %}
+    // Since we are using dynamic mode, we need to programmatically open lightGallery
+    inlineGallery.openGallery();
+  });
+</script>
+
+</body>
+</html>

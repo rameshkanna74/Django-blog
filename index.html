@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LightGallery with Zoom and Thumbnails</title>
+  <link rel="stylesheet" href="node_modules/lightgallery/css/lightgallery-bundle.min.css">
+  <style>
+    .inline-gallery-container {
+      width: 100%;
+      height: 0;
+      padding-bottom: 45%;
+    }
+  </style>
+</head>
+
+<body>
+  <div style="width: 100%; display: flex;">
+    <dir style="width: 80%;">
+      <h1>LightGallery with Zoom and Thumbnails</h1>
+    </dir>
+    <div id="inline-gallery-container" class="inline-gallery-container">
+      <!-- Your gallery content goes here -->
+      <!-- For example, you can add images or videos here -->
+      <a href="https://via.placeholder.com/800x600">
+        <img src="https://via.placeholder.com/150" alt="Thumbnail 1">
+      </a>
+      <a href="https://via.placeholder.com/1920x1080">
+        <img src="https://via.placeholder.com/150" alt="Thumbnail 2">
+      </a>
+      <!-- Add more as needed -->
+    </div>
+  </div>
+
+
+  <script src="node_modules/lightgallery/lightgallery.min.js"></script>
+  <script src="node_modules/lightgallery/plugins/zoom/lg-zoom.min.js"></script>
+  <script src="node_modules/lightgallery/plugins/thumbnail/lg-thumbnail.min.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const lgContainer = document.getElementById('inline-gallery-container');
+      let inlineGallery = lightGallery(lgContainer, {
+        container: lgContainer,
+        plugins: [lgZoom, lgThumbnail], // Add the plugins here
+        // dynamicEl: [
+        //   {
+        //     src: "https://via.placeholder.com/1920x1080",
+        //     thumb: 'https://via.placeholder.com/150',
+        //     subHtml: `<div class="lightGallery-captions">
+        //                     <h4>Caption 1</h4>
+        //                     <p>Description of the slide 1</p>
+        //                 </div>`,
+        //   },
+        //   {
+        //     src: "https://via.placeholder.com/1920x1080",
+        //     thumb: 'https://via.placeholder.com/150',
+        //     subHtml: `<div class="lightGallery-captions">
+        //                     <h4>Caption 2</h4>
+        //                     <p>Description of the slide 2</p>
+        //                 </div>`,
+        //   },
+        //   // Add more dynamicEl entries as needed
+        // ],
+      });
+
+      // Since we are using dynamic mode, we need to programmatically open lightGallery
+      inlineGallery.openGallery();
+    });
+
+  </script>
+
+</body>
+
+</html>
