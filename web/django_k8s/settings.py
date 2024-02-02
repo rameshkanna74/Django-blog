@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 import os
 from pathlib import Path
 
+import dj_database_url
+
 from .env import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -24,7 +26,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = config("DJANGO_SECRET_KEY", default=None, cast=str)
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config("DJANGO_DEBUG", default=None, cast=bool)
+# DEBUG = config("DJANGO_DEBUG", default=None, cast=bool)
+DEBUG = True
 
 ALLOWED_HOSTS = [
     "127.0.0.1",
@@ -90,6 +93,10 @@ WSGI_APPLICATION = "django_k8s.wsgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
+
+# DATABASE_URL = config("DATABASE_URL", default=None, cast=str)
+
+# DATABASES = {"default": dj_database_url.parse(DATABASE_URL)}
 
 DATABASES = {
     "default": {
@@ -182,8 +189,8 @@ AUTHENTICATION_BACKENDS = [
 SOCIALACCOUNT_PROVIDERS = {
     "github": {
         "APP": {
-            "client_id": os.environ.get("GITHUB_CLIENT_ID"),
-            "secret": os.environ.get("GITHUB_SECRET"),
+            "client_id": config("GITHUB_CLIENT_ID", default=None, cast=str),
+            "secret": config("GITHUB_SECRET", default=None, cast=str),
             "key": "",
         }
     }
