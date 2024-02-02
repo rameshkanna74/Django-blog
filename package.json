@@ -1,0 +1,13 @@
+{
+  "scripts": {
+    "dev": "tailwindcss -i web/static/tw/tailwind-input.css -o web/static/css/web-ui.css --watch"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.1"
+  },
+  "dependencies": {
+    "alpinejs": "^3.13.5",
+    "flowbite": "^2.2.1",
+    "htmx.org": "^1.9.10"
+  }
+}
