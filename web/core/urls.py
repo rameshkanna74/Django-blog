@@ -1,9 +1,11 @@
 from django.urls import path
 
-from .views import edit_document, home, index
+from .views import get_vision_data, home, index
+
+app_name = "core"
 
 urlpatterns = [
-    path("", index),
+    path("", index, name="index"),
+    path("get_vision_data/", get_vision_data, name="get_vision_data"),
     path("accounts/profile/", home),
-    path("edit_document/<uuid:document_id>/", edit_document, name="edit_document"),
 ]

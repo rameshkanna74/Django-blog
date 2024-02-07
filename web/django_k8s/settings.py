@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/5.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
+
 import os
 from pathlib import Path
 
@@ -37,7 +38,6 @@ ALLOWED_HOSTS = [
 
 print("debug: ", DEBUG)
 
-SITE_ID = 1
 # Application definition
 
 
@@ -52,7 +52,6 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django.contrib.sites",
-    "compressor",
     "allauth",
     "allauth.account",
     "allauth.socialaccount",
@@ -61,9 +60,11 @@ INSTALLED_APPS = [
     "core",
 ]
 
+SITE_ID = 1
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -101,26 +102,30 @@ WSGI_APPLICATION = "django_k8s.wsgi.application"
 
 # DATABASES = {
 #     "default": {
-#         "ENGINE": "mssql",
-#         "NAME": "DATABASE_NAME",
-#         "USER": "USER_NAME",
-#         "PASSWORD": "PASSWORD",
-#         "HOST": "HOST_ADDRESS",
-#         "PORT": "1433",
-#         "OPTIONS": {
-#             "driver": "ODBC Driver 17 for SQL Server",
-#         },
-#     },
+#         "ENGINE": "django.db.backends.sqlite3",
+#         "NAME": BASE_DIR / "db.sqlite3",
+#     }
 # }
-
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": "django",
+        "USER": "postgres",
+        "PASSWORD": "aux",
+        "HOST": "localhost",
+        "PORT": 5433,
     }
 }
-
-
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.postgresql",
+#         "NAME": "dockerdc",
+#         "USER": "myuser",
+#         "PASSWORD": "mysecretpassword",
+#         "HOST": "postgres_db",
+#         "PORT": 5424,
+#     }
+# }
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
 
@@ -155,16 +160,15 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATIC_URL = "static/"
 MEDIA_URL = "media/"
-
 MEDIA_ROOT = BASE_DIR / "media"
-STATIC_ROOT = BASE_DIR / "static"
 
+STATIC_URL = "static/"
 STATICFILES_DIRS = [
-    BASE_DIR / "static-cdn",
+    BASE_DIR / "static",
     # BASE_DIR.parent / "node_modules",
 ]
+STATIC_ROOT = BASE_DIR / "static-root"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
@@ -172,6 +176,7 @@ STATICFILES_DIRS = [
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_EMAIL_VERIFICATION = False
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = False
 ACCOUNT_SESSION_REMEMBER = True
@@ -203,9 +208,4 @@ SOCIALACCOUNT_PROVIDERS = {
         }
     }
 }
-
-COMPRESS_ROOT = BASE_DIR / "static"
-
-COMPRESS_ENABLED = True
-
-STATICFILES_FINDERS = ("compressor.finders.CompressorFinder",)
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"

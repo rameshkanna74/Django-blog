@@ -1,5 +1,4 @@
 {% load static %}
-{% load compress %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,34 +8,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Django + Tailwind CSS + Flowbite</title>
 
-  {% compress css %}
+
   <link rel="stylesheet" href="{% static 'css/web-ui.css' %}">
-  {% endcompress %}
-  <!-- Add this to your Django template head section -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@7/swiper-bundle.min.css" />
-  <script src="https://cdn.jsdelivr.net/npm/swiper@7/swiper-bundle.min.js"></script>
 
-
-  <!-- Add this to your Django template in a style block or CSS file -->
-  <style>
-    .swiper {
-      width: 100%;
-      height: 100vh;
-      /* Set the height as needed */
-    }
-
-    .swiper-slide {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100%;
-      /* Set the height as needed */
-    }
-  </style>
 
 </head>
 
-<body class="bg-green-50">
+<body class="bg-white">
 
   <!-- Add this -->
   <nav class="bg-green-50 border-gray-200 px-2 sm:px-4 py-2.5  dark:bg-gray-800">
@@ -95,26 +73,7 @@
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"></script>
-  <!-- Update the Swiper initialization script -->
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      var swiper = new Swiper('.swiper', {
-        direction: 'horizontal',
-        loop: true,
-        zoom: true,  // Enable zooming
-        pagination: {
-          el: '.swiper-pagination',
-        },
-        navigation: {
-          nextEl: '.swiper-button-next',
-          prevEl: '.swiper-button-prev',
-        },
-        scrollbar: {
-          el: '.swiper-scrollbar',
-        },
-      });
-    });
-  </script>
+
 
 </body>
 

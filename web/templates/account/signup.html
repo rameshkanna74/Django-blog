@@ -1,34 +1,103 @@
 {% extends "account/base_entrance.html" %}
 {% load allauth i18n %}
 {% block head_title %}
-    {% trans "Signup" %}
+{% trans "Signup" %}
 {% endblock head_title %}
 {% block content %}
-    {% element h1 %}
-        {% trans "Sign Up" %}
-    {% endelement %}
-    <p>
-        {% blocktrans %}Already have an account? Then please <a href="{{ login_url }}">sign in</a>.{% endblocktrans %}
-    </p>
-    {% url 'account_signup' as action_url %}
-    {% element form form=form method="post" action=action_url tags="entrance,signup" %}
-        {% slot body %}
+<style>
+    /* Global CSS for all input tags */
+    input {
+        /* Add your provided styles here */
+        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        border-width: 1px;
+        border-color: #EF4444;
+        border-radius: 0.375rem;
+        width: 100%;
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
+        padding-left: 0.75rem;
+        padding-right: 0.75rem;
+        color: #374151;
+        margin-bottom: 0.75rem;
+        line-height: 1.25;
+        outline: 2px solid transparent;
+        outline-offset: 2px;
+    }
+
+    input:focus {
+        /* Add focus styles here */
+        box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5);
+    }
+
+    button {
+        margin-left: 40% !important;
+        border-radius: 0.375rem !important;
+        /* 6px */
+        background-color: #4f46e5 !important;
+        padding-left: 0.875rem !important;
+        /* 14px */
+        padding-right: 0.875rem !important;
+        /* 14px */
+        padding-top: 0.625rem !important;
+        /* 10px */
+        padding-bottom: 0.625rem !important;
+        /* 10px */
+        font-size: 0.875rem !important;
+        /* 14px */
+        font-weight: 600 !important;
+        color: #ffffff !important;
+        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
+    }
+
+    button:hover {
+        background-color: #4338ca;
+    }
+
+    button:focus,
+    button:focus-visible,
+    button:focus-visible:focus-visible:focus {
+        outline: 2px solid #4f46e5;
+        outline-offset: 2px;
+    }
+</style>
+<div class="min-h-screen flex items-center justify-center pb-10">
+    <div class="bg-gradient-to-r from-indigo-400 to-cyan-400 max-w-sm rounded overflow-hidden shadow-lg">
+        {% element h1 %}
+        <p class="mt-8 text-center text-3xl font-bold tracking-tight sm:text-5xl">{% trans "Sign Up" %}</p>
+        {% endelement %}
+        <div class=" p-8">
+            <p>
+                Already have an account? Then please <a href="{{ login_url }}">sign in</a>.
+            </p>
+            {% url 'account_signup' as action_url %}
+            {% element form form=form method="post" action=action_url tags="entrance,signup" %}
+            {% slot body %}
             {% csrf_token %}
-            {% element fields form=form unlabeled=True %}
-            {% endelement %}
+            {% for field in form %}
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="username">
+                {{ field.label_tag }}
+            </label>
+            {{ field }}
+            {% endfor %}
             {% if redirect_field_value %}
-                <input type="hidden"
-                       name="{{ redirect_field_name }}"
-                       value="{{ redirect_field_value }}" />
+            <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
             {% endif %}
-        {% endslot %}
-        {% slot actions %}
+            {% endslot %}
+            {% slot actions %}
             {% element button tags="prominent,signup" type="submit" %}
-                {% trans "Sign Up" %}
+            {% trans "Sign Up" %}
             {% endelement %}
-        {% endslot %}
-    {% endelement %}
-    {% if SOCIALACCOUNT_ENABLED %}
-        {% include "socialaccount/snippets/login.html" with page_layout="entrance" %}
-    {% endif %}
+            {% endslot %}
+            {% endelement %}
+        </div>
+    </div>
+</div>
 {% endblock content %}
+{% if SOCIALACCOUNT_ENABLED %}
+{% include "socialaccount/snippets/login.html" with page_layout="entrance" %}
+{% endif %}
+{% element fields form=form unlabeled=False %}
+{% endelement %}
