@@ -1,2 +1,0 @@
-# Django-aurexus
-Django-aurexus

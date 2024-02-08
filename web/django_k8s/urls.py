@@ -17,13 +17,13 @@ Including another URLconf
 
 from django.conf import settings
 from django.contrib import admin
-from django.shortcuts import render
 from django.urls import include, path
+
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path("", include("a_posts.urls")),
     path("accounts/", include("allauth.urls")),
-    path("", include("core.urls")),
 ]
 
 if settings.DEBUG:

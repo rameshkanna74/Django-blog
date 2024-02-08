@@ -13,21 +13,17 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 import os
 from pathlib import Path
 
-import dj_database_url
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
-print(os.environ.get("DJANGO_SECRET_KEY"))
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
-
+SECRET_KEY = config("DJANGO_SECRET_KEY", default=None, cast=str)
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = str(os.environ.get("DEBUG")) == "1"
-print("DEBUG", DEBUG)
+# DEBUG = config("DJANGO_DEBUG", default=None, cast=bool)
+DEBUG = True
 
 ALLOWED_HOSTS = [
     "127.0.0.1",
@@ -35,11 +31,8 @@ ALLOWED_HOSTS = [
     "*",
 ]
 
-# if not DEBUG:
-#     ALLOWED_HOSTS += [os.environ.get("ALLOWED_HOST").split(",")]
 
-print("debug: ", DEBUG)
-
+SITE_ID = 1
 # Application definition
 
 
@@ -59,7 +52,7 @@ INSTALLED_APPS = [
     "allauth.socialaccount",
     "allauth.socialaccount.providers.github",
     "corsheaders",
-    "core",
+    "a_posts",
 ]
 
 SITE_ID = 1
@@ -104,39 +97,25 @@ WSGI_APPLICATION = "django_k8s.wsgi.application"
 
 # DATABASES = {
 #     "default": {
-#         "ENGINE": "django.db.backends.sqlite3",
-#         "NAME": BASE_DIR / "db.sqlite3",
-#     }
+#         "ENGINE": "mssql",
+#         "NAME": "DATABASE_NAME",
+#         "USER": "USER_NAME",
+#         "PASSWORD": "PASSWORD",
+#         "HOST": "HOST_ADDRESS",
+#         "PORT": "1433",
+#         "OPTIONS": {
+#             "driver": "ODBC Driver 17 for SQL Server",
+#         },
+#     },
 # }
-DATABASES = {}
 
-DATABASES["default"] = dj_database_url.config(
-    default=str(os.environ.get("DOCKER_DATABASE_URL")),
-    conn_max_age=600,
-    conn_health_checks=True,
-)
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
+    }
+}
 
-
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.postgresql",
-#         "NAME": "django",
-#         "USER": "postgres",
-#         "PASSWORD": "aux",
-#         "HOST": "localhost",
-#         "PORT": 5433,
-#     }
-# }
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.postgresql",
-#         "NAME": "dockerdc",
-#         "USER": "myuser",
-#         "PASSWORD": "mysecretpassword",
-#         "HOST": "postgres_db",
-#         "PORT": 5424,
-#     }
-# }
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -172,17 +151,17 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
+STATIC_URL = "static/"
 MEDIA_URL = "media/"
+
 MEDIA_ROOT = BASE_DIR / "media"
+STATIC_ROOT = BASE_DIR / "static"
 
 STATIC_URL = "static/"
 STATICFILES_DIRS = [
-    BASE_DIR / "static",
+    BASE_DIR / "static-cdn",
     # BASE_DIR.parent / "node_modules",
 ]
-STATIC_ROOT = BASE_DIR / "static-root"
-
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
@@ -234,26 +213,15 @@ AUTHENTICATION_BACKENDS = [
 SOCIALACCOUNT_PROVIDERS = {
     "github": {
         "APP": {
-            "client_id": os.environ.get("GITHUB_CLIENT_ID"),
-            "secret": os.environ.get("GITHUB_SECRET"),
+            "client_id": config("GITHUB_CLIENT_ID", default=None, cast=str),
+            "secret": config("GITHUB_SECRET", default=None, cast=str),
             "key": "",
         }
     }
 }
 
-# Redis configuration
-REDIS_HOST = os.environ.get("REDIS_HOST", "localhost")
-REDIS_PORT = os.environ.get(
-    "REDIS_PORT", 6379
-)  # Assuming the default Redis port is 6379
+COMPRESS_ROOT = BASE_DIR / "static"
 
-# Set up the cache backend to use Redis
-CACHES = {
-    "default": {
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": f"redis://{REDIS_HOST}:{REDIS_PORT}/1",  # Using database 1, you can change it if needed
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-        },
-    }
-}
+COMPRESS_ENABLED = True
+
+STATICFILES_FINDERS = ("compressor.finders.CompressorFinder",)
