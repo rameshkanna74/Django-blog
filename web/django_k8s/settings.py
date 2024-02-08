@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 import os
 from pathlib import Path
 
+import dj_database_url
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -106,16 +108,25 @@ WSGI_APPLICATION = "django_k8s.wsgi.application"
 #         "NAME": BASE_DIR / "db.sqlite3",
 #     }
 # }
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": "django",
-        "USER": "postgres",
-        "PASSWORD": "aux",
-        "HOST": "localhost",
-        "PORT": 5433,
-    }
-}
+DATABASES = {}
+
+DATABASES["default"] = dj_database_url.config(
+    default=str(os.environ.get("DOCKER_DATABASE_URL")),
+    conn_max_age=600,
+    conn_health_checks=True,
+)
+
+
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.postgresql",
+#         "NAME": "django",
+#         "USER": "postgres",
+#         "PASSWORD": "aux",
+#         "HOST": "localhost",
+#         "PORT": 5433,
+#     }
+# }
 # DATABASES = {
 #     "default": {
 #         "ENGINE": "django.db.backends.postgresql",
@@ -126,6 +137,7 @@ DATABASES = {
 #         "PORT": 5424,
 #     }
 # }
+
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
 
@@ -170,13 +182,33 @@ STATICFILES_DIRS = [
 ]
 STATIC_ROOT = BASE_DIR / "static-root"
 
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+# URL to redirect to after a successful login
+LOGIN_REDIRECT_URL = "/"
+
+# URL to redirect to after logging out
+LOGOUT_REDIRECT_URL = "/"
+
+# URL to redirect to in case of login failure
+LOGIN_URL = "/accounts/login/"
+
+EMAIL_BACKEND = os.environ.get("EMAIL_BACKEND")
+EMAIL_HOST = os.environ.get("EMAIL_HOST")
+EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
+EMAIL_PORT = os.environ.get("EMAIL_PORT")
+EMAIL_USE_TLS = os.environ.get("EMAIL_USE_TLS")
+# EMAIL_USE_SSL = os.environ.get("EMAIL_USE_SSL")
+
+
 ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_EMAIL_VERIFICATION = False
+ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = False
 ACCOUNT_SESSION_REMEMBER = True
@@ -208,4 +240,20 @@ SOCIALACCOUNT_PROVIDERS = {
         }
     }
 }
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+
+# Redis configuration
+REDIS_HOST = os.environ.get("REDIS_HOST", "localhost")
+REDIS_PORT = os.environ.get(
+    "REDIS_PORT", 6379
+)  # Assuming the default Redis port is 6379
+
+# Set up the cache backend to use Redis
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": f"redis://{REDIS_HOST}:{REDIS_PORT}/1",  # Using database 1, you can change it if needed
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        },
+    }
+}
