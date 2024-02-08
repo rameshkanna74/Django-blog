@@ -163,6 +163,12 @@ STATICFILES_DIRS = [
     # BASE_DIR.parent / "node_modules",
 ]
 
+STORAGES = {
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
@@ -219,9 +225,3 @@ SOCIALACCOUNT_PROVIDERS = {
         }
     }
 }
-
-COMPRESS_ROOT = BASE_DIR / "static"
-
-COMPRESS_ENABLED = True
-
-STATICFILES_FINDERS = ("compressor.finders.CompressorFinder",)
