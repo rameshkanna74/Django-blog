@@ -1,0 +1,10 @@
+version: "3.8"
+
+services:
+  app:
+    image: django-blog-image
+    container_name: django-blog-container
+    ports:
+      - "8001:8000"
+    volumes:
+      - .:/app
